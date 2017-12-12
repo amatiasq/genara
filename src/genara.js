@@ -18,6 +18,7 @@ const insultos = [
     'Cuando te subes a un tren provocas que vaya con retraso.',
     'Antes me fusionaría de nuevo con Ángela.',
     'Hasta los esqueletos pueden oler tu fétido aliento.',
+    'Me pregunto si tus huesos suenan cuando lo aplastas entre dimensiones...',
     'Quieres comer bordillo?',
     'Mascachapas.',
 ];

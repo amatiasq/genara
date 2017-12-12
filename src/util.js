@@ -8,6 +8,7 @@ Object.assign(exports, {
     remove,
     random,
     splitWords,
+    wait,
 });
 
 function contains(string, value) {
@@ -36,4 +37,8 @@ function random(list) {
 
 function splitWords(text) {
     return text.split(/\s+/g);
+}
+
+function wait(seconds) {
+    return new Promise(resolve => setTimeout(resolve, seconds * 1000));
 }
