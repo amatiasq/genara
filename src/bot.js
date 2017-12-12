@@ -35,12 +35,14 @@ module.exports = class Bot {
     }
 
     command(key, action) {
+        if (Array.isArray(key)) {
+            key.forEach(entry => this._commands[entry] = action);
+            this.help.push(`${key[0]} (${key.slice(1).join(', ')})`);
+            return;
+        }
+
         this._commands[key] = action;
         this.help.push(key);
-    }
-
-    alias(key, command) {
-        this._commands[key] = this._commands[command];
     }
 
     fallback(text) {

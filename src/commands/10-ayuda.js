@@ -3,9 +3,7 @@ const { random } = require('../util');
 const genara = require('../genara');
 
 
-genara.alias('help', 'ayuda');
-
-genara.command('ayuda', async(message) => {
+genara.command([ 'ayuda', 'help' ], async(message) => {
     const commands = genara.help.join('\n - ');
     const insult = random([
         'Si me invocas di algo útil...',
