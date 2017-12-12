@@ -25,8 +25,6 @@ genara.connect(process.env.GENARA_TOKEN);
 
 function loadAll(route) {
     for (const file of fs.readdirSync(path.join(__dirname, route))) {
-        const moduleName = file.replace(/\.js^/, '');
-
-        require(`${route}/${moduleName}`);
+        require(`${route}/${file}`);
     }
 }

@@ -12,7 +12,7 @@ genara.middleware(async(message, text, content) => {
     }
 
     if (words[1] === 'es' && words[0] !== 'quien') {
-        genara.memory.set(`${normalize(words[0])}.is`, words.slice(2).join(' '));
+        genara.memory.set(`${words[0]}.is`, words.slice(2).join(' '));
         return message.reply('Vale! Me lo apunto para el examen.');
     }
 });
