@@ -23,11 +23,16 @@ module.exports = class Memory {
     }
 
     get(key) {
-        return this.data[key] || null;
+        return this.data[clean(key)] || null;
     }
 
     set(key, value) {
-        this.data[key] = value;
+        this.data[clean(key)] = value;
         this.save();
     }
 };
+
+
+function clean(key) {
+    return key.replace(/^\<\@\!/, '<@');
+}

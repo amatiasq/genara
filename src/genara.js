@@ -44,4 +44,4 @@ class Genara extends Bot {
     }
 }
 
-module.exports = new Genara(prefixes, path.join(__dirname, '/memory.json'));
+module.exports = new Genara(prefixes, path.join(__dirname, '../memory.json'));
