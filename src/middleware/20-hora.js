@@ -21,7 +21,7 @@ genara.middleware(async(message, text) => {
             title: '**INSIGNIFIKANTE MORTAL!!!**',
             description: `Son las ${time()}\n=3`,
             author: { name: 'Demonio Infernal' },
-            thumbnail: { url: 'http://repos.amatiasq.com/demonio.png' }
+            thumbnail: { url: 'http://repos.amatiasq.com/genara/demonio.png' }
         }
     });
 });
