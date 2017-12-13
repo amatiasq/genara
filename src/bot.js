@@ -6,6 +6,7 @@ module.exports = class Bot {
     constructor(prefixes, memoryFile) {
         this.prefixes = prefixes;
         this.prefix = prefixes[0];
+        this._triggers = [];
         this._middleware = [];
         this._commands = {};
         this._fallbacks = [];
@@ -30,8 +31,12 @@ module.exports = class Bot {
         return true;
     }
 
-    middleware(parser) {
-        this._middleware.push(parser);
+    middleware(handler) {
+        this._middleware.push(handler);
+    }
+
+    trigger(handler) {
+        this._triggers.push(handler);
     }
 
     command(key, action) {
@@ -60,6 +65,12 @@ module.exports = class Bot {
     }
 
     async hear(message) {
+        for (const entry of this._triggers) {
+            if (await entry(message)) {
+                return;
+            }
+        }
+
         const text = this._cleanMessage(message);
 
         if (!text) {
