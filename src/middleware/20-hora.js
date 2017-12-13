@@ -1,5 +1,5 @@
 'use strict';
-const { contains, time } = require('../util');
+const { contains, normalize, time } = require('../util');
 const genara = require('../genara');
 const triggers = [
     'dime la hora',
@@ -10,7 +10,7 @@ const triggers = [
 
 
 genara.middleware(async(message, text) => {
-    if (!contains(text, triggers)) {
+    if (!contains(normalize(text), triggers)) {
         return;
     }
 
