@@ -1,9 +1,10 @@
-const { normalize, random, remove } = require('./util');
+const { contains, normalize, random, remove } = require('./util');
 const Discord = require('discord.js');
 
 module.exports = class Bot {
 
-    constructor(prefixes, memoryFile) {
+    constructor(id, prefixes, memoryFile) {
+        this.id = id;
         this.prefixes = prefixes;
         this.prefix = prefixes[0];
         this._triggers = [];
@@ -58,9 +59,15 @@ module.exports = class Bot {
         const text = normalize(message.content);
 
         for (const prefix of this.prefixes) {
-            if (text.startsWith(prefix)) {
-                return remove(message.content, prefix);
+            if (contains(text, prefix)) {
+                return text.replace(prefix, '').trim(); // remove(message.content, prefix);
             }
+        }
+
+        const self = message.mentions.users.find(user => user.id === this.id);
+
+        if (self) {
+            return message.content.replace(self, '').trim();
         }
     }
 

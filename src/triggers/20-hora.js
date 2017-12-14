@@ -3,14 +3,14 @@ const { contains, normalize, time } = require('../util');
 const genara = require('../genara');
 const triggers = [
     'dime la hora',
-    'tienes hora?',
-    'que hora es?',
-    'que hora son?',
+    'tienes hora',
+    'que hora es',
+    'que hora son',
 ];
 
 
-genara.middleware(async(message, text) => {
-    if (!contains(normalize(text), triggers)) {
+genara.trigger(async(message) => {
+    if (!contains(normalize(message.content), triggers)) {
         return;
     }
 

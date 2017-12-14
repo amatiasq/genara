@@ -30,6 +30,11 @@ module.exports = class Memory {
         this.data[clean(key)] = value;
         this.save();
     }
+
+    remove(key) {
+        delete this.data[clean(key)];
+        this.save();
+    }
 };
 
 

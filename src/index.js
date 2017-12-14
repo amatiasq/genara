@@ -14,12 +14,13 @@ genara.fallback('Aprende a hablar');
 genara.fallback('Te voy a sacar las muelas por el recto');
 
 genara.command('hola', async(message) => message.channel.send('Hola, soy Genara'));
-genara.command('di', async(message, text) => message.channel.send(text));
 genara.command('dame el link', async(message) => message.channel.send('https://discordapp.com/oauth2/authorize?client_id=389753947780546563&scope=bot&permissions=281664'));
 
 loadAll('./triggers');
 loadAll('./middleware');
 loadAll('./commands');
+
+genara.command('di', async(message, text) => message.channel.send(text));
 
 genara.connect(process.env.GENARA_TOKEN);
 
