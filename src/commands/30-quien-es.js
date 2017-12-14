@@ -19,7 +19,7 @@ genara.command('quien es', async(message, text) => {
     const fromMemory = genara.memory.get(`${target}.is`);
     const defaultResponse = responses[target];
 
-    return message.reply(
+    return message.channel.send(
         fromMemory ||
         defaultResponse ||
         random([

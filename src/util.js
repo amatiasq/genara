@@ -4,6 +4,7 @@ const removeDiacritics = require('diacritics').remove;
 Object.assign(exports, {
     contains,
     time,
+    mention,
     normalize,
     remove,
     random,
@@ -21,6 +22,10 @@ function time(date = new Date()) {
     const hours = date.getHours();
     const minutes = padLeft(date.getMinutes(), 2, '0');
     return `${hours}:${minutes}`;
+}
+
+function mention(user) {
+    return String(user).replace(/^\<\@/, '<@!');
 }
 
 function normalize(text) {

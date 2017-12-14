@@ -11,7 +11,7 @@ const mafrunes = [
 
 genara.trigger(async(message) => {
     if (contains(normalize(message.content), 'sangrad')) {
-        return message.channel.send({
+        message.channel.send({
             embed: {
                 image: { url: random(mafrunes) }
             }

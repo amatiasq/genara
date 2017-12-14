@@ -25,8 +25,8 @@ const insultos = [
 
 class Genara extends Bot {
 
-    constructor(prefixes, memoryFile) {
-        super(prefixes);
+    constructor(id, prefixes, memoryFile) {
+        super(id, prefixes);
         this.memory = new Memory(memoryFile);
     }
 
@@ -45,4 +45,4 @@ class Genara extends Bot {
     }
 }
 
-module.exports = new Genara(prefixes, path.join(__dirname, '../memory.json'));
+module.exports = new Genara('389753947780546563', prefixes, path.join(__dirname, '../memory.json'));
