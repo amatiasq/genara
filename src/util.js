@@ -1,14 +1,20 @@
 const padLeft = require('left-pad');
 const removeDiacritics = require('diacritics').remove;
+const NOT_ALPHANUMERIC_START = /^[^a-zA-Z0-9<>]+/;
+const NOT_ALPHANUMERIC_END = /[^a-zA-Z0-9<>]+$/;
 
 Object.assign(exports, {
     contains,
+    containsWord,
     time,
     mention,
     normalize,
     remove,
+    removeStart,
+    rand,
     random,
     splitWords,
+    trim,
     wait,
 });
 
@@ -16,6 +22,10 @@ function contains(string, value) {
     return Array.isArray(value)
         ? value.some(entry => contains(string, entry))
         : string.indexOf(value) !== -1;
+}
+
+function containsWord(string, word) {
+    return new RegExp(`\\b${word}\\b`).test(normalize(string));
 }
 
 function time(date = new Date()) {
@@ -32,8 +42,16 @@ function normalize(text) {
     return removeDiacritics(text.toLowerCase());
 }
 
-function remove(string, start) {
-    return string.slice(start.length).trim();
+function remove(string, text) {
+    return trim(string.replace(text, ''));
+}
+
+function removeStart(string, start) {
+    return trim(string.slice(start.length));
+}
+
+function rand(max = 1, min = 0) {
+    return Math.round((Math.random() * (max - min)) + min);
 }
 
 function random(list) {
@@ -42,6 +60,22 @@ function random(list) {
 
 function splitWords(text) {
     return text.split(/\s+/g);
+}
+
+function trim(text) {
+    const normalized = normalize(text);
+    const start = normalized.match(NOT_ALPHANUMERIC_START);
+    const end = normalized.match(NOT_ALPHANUMERIC_END);
+
+    if (start) {
+        text = text.slice(start[0].length);
+    }
+
+    if (end) {
+        text = text.slice(0, -end[0].length);
+    }
+
+    return text;
 }
 
 function wait(seconds) {

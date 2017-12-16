@@ -22,18 +22,18 @@ module.exports = class Memory {
         }
     }
 
-    get(key) {
-        return this.data[clean(key)] || null;
-    }
-
-    set(key, value) {
+    async set(key, value) {
         this.data[clean(key)] = value;
-        this.save();
+        return this.save();
     }
 
-    remove(key) {
+    async remove(key) {
         delete this.data[clean(key)];
-        this.save();
+        return this.save();
+    }
+
+    get(key, fallback) {
+        return this.data[clean(key)] || fallback;
     }
 };
 
