@@ -1,0 +1,7 @@
+'use strict';
+
+module.exports = async(bot, message, { containsWord, normalize }) => {
+    if (containsWord(message.content, 'tetas')) {
+        message.sendImage(bot.randomImage('tetas'));
+    }
+};
