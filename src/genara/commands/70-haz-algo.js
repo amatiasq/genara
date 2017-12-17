@@ -1,7 +1,7 @@
 'use strict';
 
-module.exports = async(bot, message, text, { random, wait }) => {
-    return random([
+module.exports = async(bot, message, text, { randomItem, wait }) => {
+    return randomItem([
         resucitar,
         fuego,
     ])(message, wait);

@@ -40,18 +40,14 @@ module.exports = class Bot {
 
     _readdir(route) {
         return [].concat(
-            readdir(path.join('common', route))
-                .map(file => './' + path.join('common', route, file))
-                .sort(),
-            readdir(path.join(this.directory, route))
-                .map(file => './' + path.join(this.directory, route, file))
-                .sort(),
+            readdir(path.join('common', route)),
+            readdir(path.join(this.directory, route)),
         );
     }
 
     randomImage(route) {
-        const file = util.random(readdir(path.join('../img', route)));
-        return `http://repos.amatiasq.com/genara/img/${route}/${file}`;
+        const file = util.randomItem(readdir(path.join('../img', route)));
+        return `http://repos.amatiasq.com/genara/img/${file}`;
     }
 
     async connect(token) {
@@ -241,5 +237,8 @@ module.exports = class Bot {
 
 
 function readdir(route) {
-    return fs.readdirSync(path.join(__dirname, route));
+    return fs.readdirSync(path.join(__dirname, route))
+        .filter(file => file !== '.gitkeep' && file !== '.DS_Store')
+        .map(file => './' + path.join(route, file))
+        .sort();
 }
