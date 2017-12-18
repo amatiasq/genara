@@ -2,8 +2,10 @@ const padLeft = require('left-pad');
 const removeDiacritics = require('diacritics').remove;
 const NOT_ALPHANUMERIC_START = /^[^a-zA-Z0-9<>]+/;
 const NOT_ALPHANUMERIC_END = /[^a-zA-Z0-9<>]+$/;
+const DICE_ROLL = /(\d+)d(\d+)/;
 
 Object.assign(exports, {
+    array,
     contains,
     containsWord,
     time,
@@ -13,10 +15,15 @@ Object.assign(exports, {
     removeStart,
     random,
     randomItem,
+    rollDice,
     splitWords,
     trim,
     wait,
 });
+
+function array(length) {
+    return new Array(length).fill(null);
+}
 
 function contains(string, value) {
     return Array.isArray(value)
@@ -56,6 +63,26 @@ function random(max = 1, min = 0) {
 
 function randomItem(list) {
     return list[random(list.length - 1)];
+}
+
+function rollDice(text) {
+    let found;
+
+    while (found = DICE_ROLL.exec(text)) {
+        const match = found[0];
+        const dices = parseInt(found[1], 10);
+        const faces = parseInt(found[2], 10);
+
+        if (dices === 1) {
+            text = text.replace(match, random(faces));
+        } else {
+            const rolls = array(dices).map(() => random(faces));
+            const total = rolls.reduce((sum, roll) => sum + roll, 0);
+            text = text.replace(match, `(${rolls.join(' + ')}) = ${total}`);
+        }
+    }
+
+    return text;
 }
 
 function splitWords(text) {
