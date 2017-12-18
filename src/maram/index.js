@@ -6,7 +6,7 @@ const Bot = require('../bot');
 const maram = new Bot([
     'maram'
 ], {
-    id: '389753947780546563',
+    id: '391244013421854722',
     directory: './maram',
     isHearBotEnabled: false,
     isHearSelfEnabled: false,

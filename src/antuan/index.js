@@ -16,7 +16,7 @@ class Antuan extends Bot {
 
         const insult = randomItem(category);
         let attack = insult[level];
-        
+
         if (!attack) {
             return message.reply('Algo ha petado mucho :(');
         }
@@ -79,7 +79,7 @@ class Antuan extends Bot {
 const antuan = new Antuan([
     'antuan'
 ], {
-    id: '389753947780546563',
+    id: '391243528799387652',
     directory: './antuan',
     isHearBotEnabled: false,
     isHearSelfEnabled: false,
