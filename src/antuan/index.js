@@ -81,7 +81,7 @@ const antuan = new Antuan([
 ], {
     id: '391243528799387652',
     directory: './antuan',
-    isHearBotEnabled: false,
+    isHearBotEnabled: true,
     isHearSelfEnabled: false,
 
     async unhandled(bot, message) {
@@ -93,13 +93,11 @@ const antuan = new Antuan([
 
 antuan.command('hola', async(bot, message) => message.channel.send('Hola, soy Antuán'));
 antuan.command('dame el link', async(bot, message) => message.channel.send('https://discordapp.com/oauth2/authorize?client_id=391243528799387652&scope=bot&permissions=281664'));
-antuan.command('di ', async(bot, message, text) => message.channel.send(text));
 
-antuan.alias('help', 'ayuda');
 antuan.alias('peleemos', 'pelea');
 antuan.alias('en garde', 'pelea');
 antuan.alias('mira como tiemblo', 'pelea');
 antuan.alias('no queda alcohol', 'pelea');
 antuan.alias('echemos un pulso', 'pulso');
 
-module.exports = antuan;
+module.exports = require('../common')(antuan);
