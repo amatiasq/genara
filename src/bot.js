@@ -178,7 +178,7 @@ module.exports = class Bot {
             return;
         }
 
-        if (await this._unhandled(this, message, util)) {
+        if (!message.author.bot && await this._unhandled(this, message, util)) {
             this.log('FALLBACK');
         }
     }

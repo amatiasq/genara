@@ -6,14 +6,14 @@ const triggers = [
     'omfg',
 ];
 
-module.exports = async(bot, message, { containsWord, normalize, rand }) => {
+module.exports = async(bot, message, { containsWord, normalize, random }) => {
     const trigger = triggers.some(trigger => containsWord(message.content, trigger));
 
     if (!trigger) {
         return;
     }
 
-    const execute = rand(2);
+    const execute = random(1);
     bot.log('MIDDLEWARE(OMG)', Boolean(execute));
 
     if (execute) {

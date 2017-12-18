@@ -8,7 +8,7 @@ const maram = new Bot([
 ], {
     id: '391244013421854722',
     directory: './maram',
-    isHearBotEnabled: false,
+    isHearBotEnabled: true,
     isHearSelfEnabled: false,
 
     async unhandled(bot, message) {
@@ -20,8 +20,5 @@ const maram = new Bot([
 
 maram.command('hola', async(bot, message) => message.channel.send('Hola, soy Maram'));
 maram.command('dame el link', async(bot, message) => message.channel.send('https://discordapp.com/oauth2/authorize?client_id=391244013421854722&scope=bot&permissions=281664'));
-maram.command('di ', async(bot, message, text) => message.channel.send(text));
 
-maram.alias('help', 'ayuda');
-
-module.exports = maram;
+module.exports = require('../common')(maram);
