@@ -1,7 +1,7 @@
 'use strict';
 
-module.exports = async(genara, message, text, { random }) => {
-    return message.reply(`${genara.insults.length} ${random([
+module.exports = async(genara, message, text, { randomItem }) => {
+    return message.reply(`${genara.insults.length} ${randomItem([
         'y no son suficientes para describir tu cara',
         'pero aún no encuentro uno que te ponga en tu sitio',
         'pero me basta con uno para humillarte',

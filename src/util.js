@@ -11,8 +11,8 @@ Object.assign(exports, {
     normalize,
     remove,
     removeStart,
-    rand,
     random,
+    randomItem,
     splitWords,
     trim,
     wait,
@@ -50,12 +50,12 @@ function removeStart(string, start) {
     return trim(string.slice(start.length));
 }
 
-function rand(max = 1, min = 0) {
+function random(max = 1, min = 0) {
     return Math.round((Math.random() * (max - min)) + min);
 }
 
-function random(list) {
-    return list[Math.floor(Math.random() * list.length)];
+function randomItem(list) {
+    return list[random(list.length - 1)];
 }
 
 function splitWords(text) {

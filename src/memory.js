@@ -32,6 +32,10 @@ module.exports = class Memory {
         return this.save();
     }
 
+    async edit(key, callback) {
+        return this.set(key, await callback(this.get(key)))
+    }
+
     get(key, fallback) {
         return this.data[clean(key)] || fallback;
     }

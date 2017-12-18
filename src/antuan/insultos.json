@@ -1,0 +1,175 @@
+{
+    "secret": [{
+        "normal": "¿Has dejado ya de usar pañales?",
+        "master": "Espero que tengas un barco para una rápida huida.",
+        "answer": "¿Por qué? ¿Acaso querías pedir uno prestado?"
+    }, {
+        "normal": "¡No hay palabras para describir lo asqueroso que eres!",
+        "master": "Ya no hay técnicas que te puedan salvar.",
+        "answer": "Sí que las hay, sólo que nunca las has aprendido."
+    }, {
+        "normal": "¡He hablado con simios más educados que tu!",
+        "master": "Ahora entiendo lo que significan basura y estupidez.",
+        "answer": "Me alegra que asistieras a tu reunión familiar diaria."
+    }, {
+        "normal": "¡Llevarás mi espada como si fueras un pincho moruno!",
+        "master": "Mi lengua es más hábil que cualquier espada.",
+        "answer": "Primero deberías dejar de usarla como un plumero."
+    }, {
+        "normal": "¡Luchas como un ganadero!",
+        "master": "¡ Ordeñaré hasta la última gota de sangre de tu cuerpo !",
+        "answer": "Qué apropiado, tú peleas como una vaca."
+    }, {
+        "normal": "¡No pienso aguantar tu insolencia aquí sentado!",
+        "master": "¡ Eres como un dolor en la parte baja de la espalda !",
+        "answer": "Ya te están fastidiando otra vez las almorranas, ¿Eh?"
+    }, {
+        "normal": "¡Mi pañuelo limpiará tu sangre!",
+        "answer": "Ah, ¿Ya has obtenido ese trabajo de barrendero?"
+    }, {
+        "normal": "¡Ha llegado tu HORA, palurdo de ocho patas!",
+        "master": "Hoy te tengo preparada una larga y dura lección.",
+        "answer": "Y yo tengo un SALUDO para ti, ¿Te enteras?"
+    }, {
+        "normal": "¡Una vez tuve un perro más listo que tu!",
+        "master": "Sólo he conocido a uno tan cobarde como tú.",
+        "answer": "Te habrá enseñado todo lo que sabes."
+    }, {
+        "normal": "¡Nadie me ha sacado sangre jamás, y nadie lo hará!",
+        "master": "Nunca me verán luchar tan mal como tú lo haces.",
+        "answer": "¿TAN rápido corres?"
+    }, {
+        "normal": "¡Me das ganas de vomitar!",
+        "master": "Si tu hermano es como tú, mejor casarse con un cerdo.",
+        "answer": "Me haces pensar que alguien ya lo ha hecho."
+    }, {
+        "normal": "¡Tienes los modales de un mendigo!",
+        "master": "Cada palabra que sale de tu boca es una estupidez.",
+        "answer": "Quería asegurarme de que estuvieras a gusto conmigo."
+    }, {
+        "normal": "¡He oído que eres un soplón despreciable!",
+        "master": [
+            "Mi espada es famosa en todo el Caribe",
+            "¡Mi nombre es temido en cada sucio rincón de esta isla !"
+        ],
+        "answer": "Qué pena me da que nadie haya oído hablar de ti"
+    }, {
+        "normal": "¡La gente cae a mis pies al verme llegar!",
+        "master": [
+            "Mis enemigos más sabios corren al verme llegar",
+            "Veo gente como tú arrastrándose por el suelo de los bares."
+        ],
+        "answer": "¿Incluso antes de que huelan tu aliento?"
+    }, {
+        "normal": "¡Demasiado bobo para mi nivel de inteligencia!",
+        "master": "¡ Tengo el coraje y la técnica de un maestro !",
+        "answer": "Estaría acabado si la usases alguna vez."
+    }, {
+        "normal": "Obtuve esta cicatriz en una batalla a muerte!",
+        "master": "Mi ultima pelea acabo con mis manos llenas de sangre.",
+        "answer": "Espero que ya hayas aprendido a no tocarte la nariz."
+    }],
+
+    "third": [{
+        "normal": "Eres tan repulsivo como una mona marrana.",
+        "master": "Tienes el atractivo de una iguana.",
+        "answer": "¿Es que TANTO me parezco a tu hermana?"
+    }, {
+        "normal": "¡Que el cielo conserve mi vista!¡Pareces muerto como el pescado!",
+        "master": "Nada podrá salvar tu pobre pellejo resecado.",
+        "answer": "La única forma en la que te conservarás será disecado."
+    }, {
+        "normal": "¡Te perseguiré dia y noche sin ningún respeto!",
+        "master": "¡Persiguiendo a mi presa, la dejo en un aprieto!",
+        "answer": "Entonces se un buen perro ¡Siéntate! ¡Quieto!"
+    }, {
+        "normal": "¡Voy a ensartarte como a una puerca guarrería!",
+        "master": "Tus labios me recuerdan a los del pescado del día.",
+        "answer": "Cuando acabe CONTIGO, serás un bistec con disentería."
+    }, {
+        "normal": "Mis grandes hazañas por todo el Caribe son celebradas.",
+        "master": "Mis habilidades con la espada son muy veneradas.",
+        "answer": "Que pena que todas estén inventadas."
+    }, {
+        "normal": "Jamás había visto a nadie tan torpe con la espada",
+        "master": "Nunca he perdido una pelea a espada.",
+        "answer": "Así habría sido, pero siempre estabas de escapada."
+    }, {
+        "normal": "¡No descansaré hasta que hayas sido exterminado!",
+        "master": "¡Tu olor hasta a un limpiador de retretes dejaría conmocionado!",
+        "answer": "Entonces deberías cambiar a descafeinado."
+    }, {
+        "normal": "¡Matarte seria un homicidio justificado!",
+        "master": "Cuando termine, tu cuerpo estará podrido y disecado.",
+        "answer": "Entonces matarte debe ser un fungicidio justificado."
+    }, {
+        "normal": "¡Si luchas cara a cara conmigo necesitarás un consejero!",
+        "master": "Nunca antes me había encarado a alguien tan pordiosero.",
+        "answer": "Es esa tu cara, pensé que era tu trasero."
+    }, {
+        "normal": "Te dejaré devastado, mutilado y perforado.",
+        "master": "No se cual de mis características te tiene más intimidado.",
+        "answer": "Tu solo olor me deja enfadado, agitado y enojado."
+    }, {
+        "normal": "¡Eres el monstruo más feo jamás creado!",
+        "master": "Tu cara haría vomitar hasta al cerdo menos aseado.",
+        "answer": "Si no cuentas todas las demás con las que te has citado."
+    }, {
+        "normal": "¿Te gustaría ser enterrado o incinerado?",
+        "master": "Te dejaré elegir. ¡Puedes ser destripado o decapitado!",
+        "answer": "Contigo alrededor, preferiría ser fumigado."
+    }, {
+        "normal": "Cuando tu padre te vio por primera vez debió sentirse mortificado.",
+        "master": "Eres de un linaje sucio y alocado.",
+        "answer": "Al menos el mio puede ser identificado."
+    }, {
+        "normal": "¡Mis graciosos comentarios no igualarás con acierto!",
+        "master": "Nada podrá impedirme que te arrastre como el viento.",
+        "answer": "Podré, si utilizas un espray contra tu mal aliento."
+    }, {
+        "normal": "¡En guardia! ¡Mamarracho!",
+        "master": "¡Tu madre es un marimacho!",
+        "answer": "¡Tus palabras no son de un macho!"
+    }],
+
+    "pulso": [{
+        "normal": "Ugh.. Hoy con brazo poderoso a doce hombres he vencido.",
+        "answer": "Grrr... Al ver el tamaño de tu barriga, diríase que te los has comido."
+    }, {
+        "normal": "Tengo músculos en lugares que no conoces ni de nombre.",
+        "answer": "Aarrgh... Lástima que no tengas ninguno en los brazos."
+    }, {
+        "normal": "Ríndete ahora o te aplastaré como a un tomate.",
+        "answer": "Me rendiría si eso me evitara tener que mirarte."
+    }, {
+        "normal": "Te voy a poner el brazo en cabestrillo.",
+        "answer": "¿Por qué? ¿Estudias para enfermera?"
+    }, {
+        "normal": "Aargh.. Mi fuerza asombrosa te romperá el cúbito en mil pedazos.",
+        "answer": "Grrrr... No me imaginaba que supieras contar hasta tan alto."
+    }, {
+        "normal": "Aaarg... ¡Eh! ¡Mira allí!",
+        "answer": "Uugh.. Sí, sí, ya sé. Un mono con tres cabezas."
+    }, {
+        "normal": "Aargh... Moleré tus nudillos hasta hacerlos pasta.",
+        "answer": "Aargh.. No me hagas reír, por favor, basta."
+    }, {
+        "normal": "He visto pulgas con brazos más grandes que los tuyos.",
+        "answer": "Aargh POR ESO te rascas con tanta saña. Que te vea un veterinario."
+    }, {
+        "normal": "Dicen que mis puños son un arma letal.",
+        "answer": "Pues tu aliento debería considerarse igual."
+    }, {
+        "normal": "Ungh.. Sólo una vez en mi vida vi un cobarde como tú.",
+        "answer": "Uungh... Ya y supongo que el te enseñó todo lo que sabes. Grr..."
+    }, {
+        "normal": "Uuggh Eres el bicho más feo que en mi vida haya encontrado...",
+        "answer": "Me asombra que nunca a tu mujer hayas mirado."
+    }, {
+        "normal": "Arrrgh... Mi bisabuela de 98 años tiene mejores bíceps que tú.",
+        "answer": "Ugh, sí pero tanto ella como yo tenemos mejor control de la vejiga que tú."
+    }, {
+        "normal": "Uungh... Mis brazos son tan fuertes como troncos.",
+        "answer": "Arrrgh... Nada que no se pueda curar con una buena crema exfoliante"
+    }]
+}

@@ -1,5 +1,5 @@
 'use strict';
-const { random } = require('../util');
+const { randomItem } = require('../util');
 const Bot = require('../bot');
 
 
@@ -10,7 +10,7 @@ class Genara extends Bot {
     }
 
     insult(extra = []) {
-        return random(this.insults.concat(extra));
+        return randomItem(this.insults.concat(extra));
     }
 }
 
@@ -25,7 +25,7 @@ const genara = new Genara([
     isHearSelfEnabled: false,
 
     async unhandled(bot, message) {
-        return message.reply(random([
+        return message.reply(randomItem([
             '¿Que coño dices, imbécil?',
             'Que te pasa en la boca?',
             'Eres tonto o humano?',
