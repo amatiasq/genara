@@ -47,7 +47,7 @@ module.exports = class Bot {
 
     randomImage(route) {
         const file = util.randomItem(readdir(path.join('../img', route)));
-        return `http://repos.amatiasq.com/${path.join('genara/img', route, file)}`;
+        return `http://repos.amatiasq.com/${path.join('genara', route, file)}`;
     }
 
     async connect(token) {

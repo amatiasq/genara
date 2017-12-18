@@ -100,5 +100,6 @@ antuan.alias('peleemos', 'pelea');
 antuan.alias('en garde', 'pelea');
 antuan.alias('mira como tiemblo', 'pelea');
 antuan.alias('no queda alcohol', 'pelea');
+antuan.alias('echemos un pulso', 'pulso');
 
 module.exports = antuan;
