@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = async(bot, message, text, { normalize, randomItem, splitWords, trim}) => {
+module.exports = async(bot, message, text, { normalize, randomItem, splitWords, trim }) => {
     const target = splitWords(trim(normalize(text)))[0];
     const memory = bot.memory.get('who') || {};
 

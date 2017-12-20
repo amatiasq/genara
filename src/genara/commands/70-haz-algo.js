@@ -14,8 +14,8 @@ async function resucitar(message, wait) {
     await message.channel.send({
         embed: {
             title: 'UL, UOY PA KIEUG OCOP OREP NIVIL RA',
-            thumbnail: { url: 'http://repos.amatiasq.com/genara/img/invoca.png' }
-        }
+            thumbnail: { url: 'http://repos.amatiasq.com/genara/img/invoca.png' },
+        },
     });
 
     await message.channel.send('MUERTOS!! LEVANTAD VUESTRAS CABEZAS!!');

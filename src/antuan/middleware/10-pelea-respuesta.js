@@ -1,34 +1,20 @@
 'use strict';
 const number = /\d+/;
 
-module.exports = async(antuan, message, { randomItem }) => {
-    const match = message.removeMention().match(number);
-    const response = match && parseInt(match[0], 10);
+module.exports = async(bot, message, { randomItem }) => {
+    const result = await bot.resolveTrivia('pelea', message.author, message.removeMention());
 
-    if (response == null || isNaN(response)) {
+    if (!result) {
         return;
     }
 
-    const stored = antuan.memory.get('current-fights');
-
-    if (!stored || !stored[message.author]) {
-        return;
-    }
-
-    const entry = stored[message.author];
-    const success = response === entry.answer;
-
-    await antuan.endFight(message.author, entry.id);
+    const { success, expected } = result;
 
     if (!success) {
-        return message.reply(`No eres digno de mi espada. La respuesta correcta era la ${entry.answer}.`);
+        return message.reply(`No eres digno de mi espada. La respuesta correcta era la ${expected}.`);
     }
 
-    await antuan.memory.edit('points', (points = {}) => {
-        const current = points[message.author] || 0;
-        points[message.author] = current + 1;
-        return points;
-    });
+    await bot.addPoints('pelea', message.author, 1);
 
     return message.reply(`${randomItem([
         'Touché!',

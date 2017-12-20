@@ -10,7 +10,7 @@ module.exports = async(genara, message, text, { splitWords }) => {
 
     const index = parseInt(words[0], 10);
     if (!isNaN(index)) {
-        return message.reply(genara.insults[index] || 'ese número no existe, idiota');
+        return message.reply(genara.getLearnt('insult', index) || 'ese número no existe, idiota');
     }
 
     return message.reply(genara.insult([

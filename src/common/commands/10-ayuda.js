@@ -1,5 +1,5 @@
 'use strict';
 
-module.exports = async(bot, message, text) => {
+module.exports = async(bot, message) => {
     return message.reply(`Puedes decir:\n${bot.help()}`);
 };

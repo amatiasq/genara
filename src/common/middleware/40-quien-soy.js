@@ -6,7 +6,7 @@ module.exports = async(bot, message, { containsWord, normalize, trim }) => {
     const isQuienSoy = text === 'quien soy' || text === 'quien soy?';
     const isInvoked = containsWord(text, 'quien soy');
 
-    if (isQuienSoy || (isMentioned && isInvoked)) {
+    if (isQuienSoy || isMentioned && isInvoked) {
         return bot.executeCommand(message, `quien es ${message.author}`);
     }
 };
