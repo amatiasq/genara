@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = async(bot, message, { contains, normalize, random }) => {
+module.exports = async(bot, message) => {
     const messages = bot.memory.get(`${message.author}.tell`);
 
     if (!messages) {

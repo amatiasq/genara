@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 const padLeft = require('left-pad');
 const removeDiacritics = require('diacritics').remove;
 const NOT_ALPHANUMERIC_START = /^[^a-zA-Z0-9<>]+/;
@@ -15,6 +17,7 @@ Object.assign(exports, {
     removeStart,
     random,
     randomItem,
+    readdir,
     rollDice,
     splitWords,
     trim,
@@ -26,9 +29,9 @@ function array(length) {
 }
 
 function contains(string, value) {
-    return Array.isArray(value)
-        ? value.some(entry => contains(string, entry))
-        : string.indexOf(value) !== -1;
+    return Array.isArray(value) ?
+        value.some(entry => contains(string, entry)) :
+        string.indexOf(value) !== -1;
 }
 
 function containsWord(string, word) {
@@ -42,7 +45,7 @@ function time(date = new Date()) {
 }
 
 function mention(user) {
-    return String(user).replace(/^\<\@/, '<@!');
+    return String(user).replace(/^<@/, '<@!');
 }
 
 function normalize(text) {
@@ -58,31 +61,42 @@ function removeStart(string, start) {
 }
 
 function random(max = 1, min = 0) {
-    return Math.round((Math.random() * (max - min)) + min);
+    return Math.round(Math.random() * (max - min) + min);
 }
 
 function randomItem(list) {
     return list[random(list.length - 1)];
 }
 
-function rollDice(text) {
-    let found;
+function readdir(route) {
+    return fs.readdirSync(path.join(__dirname, route))
+        .filter(file => file !== '.gitkeep' && file !== '.DS_Store')
+        .map(file => './' + path.join(route, file))
+        .sort();
+}
 
+
+function rollDice(text) {
+    let found = null;
+    let result = text;
+
+    // eslint-disable-next-line no-cond-assign
     while (found = DICE_ROLL.exec(text)) {
         const match = found[0];
         const dices = parseInt(found[1], 10);
         const faces = parseInt(found[2], 10);
 
         if (dices === 1) {
-            text = text.replace(match, random(faces));
-        } else {
+            result = result.replace(match, random(faces));
+        }
+        else {
             const rolls = array(dices).map(() => random(faces));
             const total = rolls.reduce((sum, roll) => sum + roll, 0);
-            text = text.replace(match, `(${rolls.join(' + ')}) = ${total}`);
+            result = result.replace(match, `(${rolls.join(' + ')}) = ${total}`);
         }
     }
 
-    return text;
+    return result;
 }
 
 function splitWords(text) {
@@ -93,16 +107,17 @@ function trim(text) {
     const normalized = normalize(text);
     const start = normalized.match(NOT_ALPHANUMERIC_START);
     const end = normalized.match(NOT_ALPHANUMERIC_END);
+    let result = text;
 
     if (start) {
-        text = text.slice(start[0].length);
+        result = result.slice(start[0].length);
     }
 
     if (end) {
-        text = text.slice(0, -end[0].length);
+        result = result.slice(0, -end[0].length);
     }
 
-    return text;
+    return result;
 }
 
 function wait(seconds) {

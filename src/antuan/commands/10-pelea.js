@@ -1,9 +1,26 @@
 'use strict';
+const insults = require('../insultos.json');
 
-module.exports = async(antuan, message, text, { containsWord, randomItem }) => {
-    return antuan.fight(
-        message,
-        containsWord(text, 'idiota') ? 'third' : 'secret',
-        containsWord(text, 'pro') ? 'master' : 'normal'
-    );
+module.exports = async(bot, message, text, { containsWord }) => {
+    const category = containsWord(text, 'idiota') ? 'third' : 'secret';
+    const level = containsWord(text, 'pro') ? 'master' : 'normal';
+    const list = insults[category].map(entry => {
+        if (!entry[level]) {
+            return null;
+        }
+
+        return {
+            question: entry[level],
+            answer: entry.answer,
+        };
+    });
+
+    const result = await bot.trivia(message, 'pelea', list.filter(Boolean));
+
+    if (!result) {
+        return;
+    }
+
+    const { question, options, seconds } = result;
+    return message.reply(`En garde!\n${question}\n\n${options.join('\n')}\n\nTienes ${seconds} segundos!`);
 };

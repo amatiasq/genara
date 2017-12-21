@@ -20,8 +20,8 @@ module.exports = async(bot, message, { containsWord, time }) => {
             title: '**INSIGNIFIKANTE MORTAL!!!**',
             description: `Son las ${time()}\n=3`,
             author: { name: 'Demonio Infernal' },
-            thumbnail: { url: 'http://repos.amatiasq.com/genara/img/demonio.png' }
-        }
+            thumbnail: { url: 'http://repos.amatiasq.com/genara/img/demonio.png' },
+        },
     });
 
 };

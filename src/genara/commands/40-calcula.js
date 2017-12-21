@@ -1,5 +1,5 @@
 'use strict';
-const redFlags = ['if',  'for', 'while', 'require'];
+const redFlags = [ 'if', 'for', 'while', 'require' ];
 
 module.exports = async(bot, message, script, { contains }) => {
     if (contains(script, redFlags)) {
@@ -7,9 +7,11 @@ module.exports = async(bot, message, script, { contains }) => {
     }
 
     try {
+        // eslint-disable-next-line no-new-func
         const response = new Function(`return ${script}`)();
         return message.reply(response);
-    } catch (error) {
+    }
+    catch (error) {
         return message.reply(`Ya la has liado: ${error.message}`);
     }
 };

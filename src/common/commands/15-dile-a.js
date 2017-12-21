@@ -1,10 +1,6 @@
 'use strict';
 
-module.exports = async(bot, message, text, {
-    mention,
-    normalize,
-    removeStart
-}) => {
+module.exports = async(bot, message, text, { mention, removeStart }) => {
     const target = message.getFirstMention();
 
     if (!target) {

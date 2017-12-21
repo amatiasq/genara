@@ -133,43 +133,43 @@
     }],
 
     "pulso": [{
-        "normal": "Ugh.. Hoy con brazo poderoso a doce hombres he vencido.",
+        "question": "Ugh.. Hoy con brazo poderoso a doce hombres he vencido.",
         "answer": "Grrr... Al ver el tamaño de tu barriga, diríase que te los has comido."
     }, {
-        "normal": "Tengo músculos en lugares que no conoces ni de nombre.",
+        "question": "Tengo músculos en lugares que no conoces ni de nombre.",
         "answer": "Aarrgh... Lástima que no tengas ninguno en los brazos."
     }, {
-        "normal": "Ríndete ahora o te aplastaré como a un tomate.",
+        "question": "Ríndete ahora o te aplastaré como a un tomate.",
         "answer": "Me rendiría si eso me evitara tener que mirarte."
     }, {
-        "normal": "Te voy a poner el brazo en cabestrillo.",
+        "question": "Te voy a poner el brazo en cabestrillo.",
         "answer": "¿Por qué? ¿Estudias para enfermera?"
     }, {
-        "normal": "Aargh.. Mi fuerza asombrosa te romperá el cúbito en mil pedazos.",
+        "question": "Aargh.. Mi fuerza asombrosa te romperá el cúbito en mil pedazos.",
         "answer": "Grrrr... No me imaginaba que supieras contar hasta tan alto."
     }, {
-        "normal": "Aaarg... ¡Eh! ¡Mira allí!",
+        "question": "Aaarg... ¡Eh! ¡Mira allí!",
         "answer": "Uugh.. Sí, sí, ya sé. Un mono con tres cabezas."
     }, {
-        "normal": "Aargh... Moleré tus nudillos hasta hacerlos pasta.",
+        "question": "Aargh... Moleré tus nudillos hasta hacerlos pasta.",
         "answer": "Aargh.. No me hagas reír, por favor, basta."
     }, {
-        "normal": "He visto pulgas con brazos más grandes que los tuyos.",
+        "question": "He visto pulgas con brazos más grandes que los tuyos.",
         "answer": "Aargh POR ESO te rascas con tanta saña. Que te vea un veterinario."
     }, {
-        "normal": "Dicen que mis puños son un arma letal.",
+        "question": "Dicen que mis puños son un arma letal.",
         "answer": "Pues tu aliento debería considerarse igual."
     }, {
-        "normal": "Ungh.. Sólo una vez en mi vida vi un cobarde como tú.",
+        "question": "Ungh.. Sólo una vez en mi vida vi un cobarde como tú.",
         "answer": "Uungh... Ya y supongo que el te enseñó todo lo que sabes. Grr..."
     }, {
-        "normal": "Uuggh Eres el bicho más feo que en mi vida haya encontrado...",
+        "question": "Uuggh Eres el bicho más feo que en mi vida haya encontrado...",
         "answer": "Me asombra que nunca a tu mujer hayas mirado."
     }, {
-        "normal": "Arrrgh... Mi bisabuela de 98 años tiene mejores bíceps que tú.",
+        "question": "Arrrgh... Mi bisabuela de 98 años tiene mejores bíceps que tú.",
         "answer": "Ugh, sí pero tanto ella como yo tenemos mejor control de la vejiga que tú."
     }, {
-        "normal": "Uungh... Mis brazos son tan fuertes como troncos.",
+        "question": "Uungh... Mis brazos son tan fuertes como troncos.",
         "answer": "Arrrgh... Nada que no se pueda curar con una buena crema exfoliante"
     }]
 }
