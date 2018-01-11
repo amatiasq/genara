@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = async(bot, message, { contains, normalize, random }) => {
+module.exports = async(bot, message) => {
     const target = message.getFirstMention();
 
     if (!target) {

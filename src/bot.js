@@ -6,17 +6,23 @@ const util = require('./util');
 
 module.exports = class Bot {
 
+    static apply(...mixins) {
+        return mixins.reduce((output, mixin) => mixin(output), Bot);
+    }
+
     constructor(prefixes, {
         id,
         directory,
         isHearBotEnabled = false,
         isHearSelfEnabled = false,
         unhandled = () => {},
+        messages = {},
     }) {
         this.prefixes = prefixes;
         this.name = prefixes[0];
         this.id = id;
         this.directory = directory;
+        this._messages = messages;
 
         this._middleware = [];
         this._commands = [];
@@ -27,7 +33,7 @@ module.exports = class Bot {
 
         this.isConnected = false;
         this.client = new Discord.Client();
-        this.memory = new Memory(path.join(__dirname, `../memory/${this.name}.json`));
+        this.memory = new Memory(path.join(__dirname, `../memory/${this.name}.json`), this.name);
     }
 
     log(type, ...message) {
@@ -40,14 +46,9 @@ module.exports = class Bot {
 
     _readdir(route) {
         return [].concat(
-            readdir(path.join('common', route)),
-            readdir(path.join(this.directory, route)),
+            util.readdir(path.join('common', route)),
+            util.readdir(path.join(this.directory, route)),
         );
-    }
-
-    randomImage(route) {
-        const file = util.randomItem(readdir(path.join('../img', route)));
-        return `http://repos.amatiasq.com/${path.join('genara', route, file)}`;
     }
 
     async connect(token) {
@@ -92,13 +93,13 @@ module.exports = class Bot {
             return;
         }
 
-        message.content = message.content.replace(/\<\@\!/g, '<@');
+        message.content = message.content.replace(/<@!/g, '<@');
         const cleaned = this._cleanMessage(message);
-        const bot = this;
+        const self = this;
 
         Object.assign(message, {
             sendImage(url) {
-                bot.log('IMG', url);
+                self.log('IMG', url);
                 return this.channel.send({ embed: { image: { url }}});
             },
 
@@ -110,17 +111,21 @@ module.exports = class Bot {
                 return cleaned || message.content;
             },
 
+            getAuthorNick() {
+                return this.author.lastMessage.member.nickname || this.author.username;
+            },
+
             getFirstMention() {
                 let index = 0;
                 let target = message.mentions.users.first();
 
-                while (target && target.id === bot.id) {
+                while (target && target.id === self.id) {
                     index++;
                     target = message.mentions.users.first(index + 1)[index];
                 }
 
                 return target;
-            }
+            },
         });
 
         this.log(`HEAR(mentioned:${message.isMentioned()})`, message.content);
@@ -148,9 +153,9 @@ module.exports = class Bot {
         const list = commands.map(command => {
             const alias = aliases.filter(alias => this._alias[alias] === command);
 
-            return alias.length
-                ? `${command} (${alias.join(', ')})`
-                : command;
+            return alias.length ?
+                `${command} (${alias.join(', ')})` :
+                command;
         });
 
         return ` - ${list.join('\n - ')}`;
@@ -166,7 +171,7 @@ module.exports = class Bot {
         for (const entry of this._middleware) {
             if (await entry(this, message, util)) {
                 this.log('MIDDLEWARE', this._middleware.indexOf(entry));
-                return;
+                return true;
             }
         }
 
@@ -175,23 +180,24 @@ module.exports = class Bot {
         }
 
         if (await this.executeCommand(message, message.removeMention())) {
-            return;
+            return true;
         }
 
         if (!message.author.bot && await this._unhandled(this, message, util)) {
-            this.log('FALLBACK');
+            this.log('FALLBACK(HANDLER)');
+            return true;
         }
     }
 
     async executeCommand(message, content) {
-        const text = util.normalize(content);
+        const normalized = util.normalize(content);
+        let text = content;
         let handler = null;
 
         for (const command of Object.keys(this._commands)) {
-            // this.log(`TEST_COMMAND(${command})`, content);
-            if (text.startsWith(command)) {
+            if (normalized.startsWith(command)) {
                 this.log(`COMMAND(${command})`, content);
-                content = util.removeStart(content, command);
+                text = util.removeStart(content, command);
                 handler = this._commands[command];
                 break;
             }
@@ -199,10 +205,10 @@ module.exports = class Bot {
 
         if (!handler) {
             for (const alias of Object.keys(this._alias)) {
-                if (text.startsWith(alias)) {
+                if (normalized.startsWith(alias)) {
                     const command = this._alias[alias];
                     this.log(`ALIAS(${alias}=>${command})`, content);
-                    content = util.removeStart(content, alias);
+                    text = util.removeStart(content, alias);
                     handler = this._commands[command];
                     break;
                 }
@@ -210,7 +216,7 @@ module.exports = class Bot {
         }
 
         if (handler) {
-            return await handler(this, message, content, util);
+            return handler(this, message, text, util);
         }
     }
 
@@ -227,18 +233,10 @@ module.exports = class Bot {
             }
         }
 
-        const self = message.mentions.users.find(user => this.is(user));
+        const botMention = message.mentions.users.find(user => this.is(user));
 
-        if (self) {
-            return util.remove(message.content, self);
+        if (botMention) {
+            return util.remove(message.content, botMention);
         }
     }
 };
-
-
-function readdir(route) {
-    return fs.readdirSync(path.join(__dirname, route))
-        .filter(file => file !== '.gitkeep' && file !== '.DS_Store')
-        .map(file => './' + path.join(route, file))
-        .sort();
-}
