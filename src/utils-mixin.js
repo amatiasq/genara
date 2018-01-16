@@ -12,13 +12,13 @@ module.exports = (BotSubclass) => {
         }
 
         async hear(message) {
-            const result = super.hear(message);
+            const result = await super.hear(message);
 
             if (!message.isMentioned() || result) {
                 return result;
             }
 
-            const fallback = message('FALLBACK');
+            const fallback = this.message('FALLBACK');
             this.log('FALLBACK(TEXT)', fallback);
             return message.reply(fallback);
         }
