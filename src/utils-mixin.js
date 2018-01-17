@@ -14,7 +14,7 @@ module.exports = (BotSubclass) => {
         async hear(message) {
             const result = await super.hear(message);
 
-            if (!message.isMentioned() || result) {
+            if (result || message.author.bot || !message.isMentioned()) {
                 return result;
             }
 
