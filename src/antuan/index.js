@@ -14,8 +14,8 @@ const antuan = new Bot([
     isHearSelfEnabled: false,
 
     MIN_SECONDS: 4,
-    MAX_SECONDS: 20,
-    MIN_ANSWERS: 2,
+    MAX_SECONDS: 8,
+    MIN_ANSWERS: 3,
     MAX_ANSWERS: 8,
 
     messages: {
