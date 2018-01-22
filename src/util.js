@@ -10,6 +10,8 @@ Object.assign(exports, {
     array,
     contains,
     containsWord,
+    date,
+    datetime,
     time,
     mention,
     normalize,
@@ -36,6 +38,17 @@ function contains(string, value) {
 
 function containsWord(string, word) {
     return new RegExp(`\\b${word}\\b`).test(normalize(string));
+}
+
+function datetime(a = new Date()) {
+    return `${date(a)} ${time(a)}`;
+}
+
+function date(date = new Date()) {
+    const year = date.getFullYear();
+    const month = padLeft(date.getMonth() + 1, 2, '0');
+    const day = padLeft(date.getDate(), 2, '0');
+    return `${year}/${month}/${day}`;
 }
 
 function time(date = new Date()) {
