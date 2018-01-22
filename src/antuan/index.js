@@ -3,6 +3,7 @@ const Bot = require('../bot').apply(
     require('../utils-mixin'),
     require('../learn-mixin'),
     require('../trivia-mixin'),
+    require('../ignore-mixin'),
 );
 
 const antuan = new Bot([

@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const padLeft = require('left-pad');
 const Discord = require('discord.js');
 const Memory = require('./memory');
 const util = require('./util');
@@ -37,7 +38,7 @@ module.exports = class Bot {
     }
 
     log(type, ...message) {
-        console.log(`[${this.name.toUpperCase()}][${type}]`, ...message);
+        console.log(`[${padLeft(this.name.toUpperCase(), 6, ' ')}][${type}]`, ...message);
     }
 
     is(user) {
@@ -128,7 +129,11 @@ module.exports = class Bot {
             },
         });
 
-        this.log(`HEAR(mentioned:${message.isMentioned()})`, message.content);
+        this.log(
+            `HEAR(${message.isMentioned()})`,
+            `${util.datetime()} ${message.guild.name}#${message.channel.name} ${message.author.username}: ${message.content}`
+        );
+
         return this.hear(message).catch(error => this.log('ERROR', error));
     }
 

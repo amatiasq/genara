@@ -3,6 +3,7 @@ const { randomItem } = require('../util');
 const Bot = require('../bot').apply(
     require('../utils-mixin'),
     require('../learn-mixin'),
+    require('../ignore-mixin'),
 );
 
 
