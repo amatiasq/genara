@@ -4,6 +4,10 @@ const padLeft = require('left-pad');
 const Discord = require('discord.js');
 const Memory = require('./memory');
 const util = require('./util');
+const logged = new Map();
+
+// every hour
+setInterval(() => logged.clear(), 1000 * 60 * 60);
 
 module.exports = class Bot {
 
@@ -129,10 +133,16 @@ module.exports = class Bot {
             },
         });
 
-        this.log(
-            `HEAR(${message.isMentioned()})`,
-            `${util.datetime()} ${message.guild.name}#${message.channel.name} ${message.author.username}: ${message.content}`
-        );
+        const logEntry = `[${util.datetime()}, ${message.guild.name}#${message.channel.name}] ${message.author.username}: ${message.content}`;
+
+        if (!logged.has(logEntry)) {
+            logged.set(logEntry, true);
+            console.log(logEntry);
+        }
+
+        if (message.isMentioned()) {
+            this.log('HEAR');
+        }
 
         return this.hear(message).catch(error => this.log('ERROR', error));
     }
