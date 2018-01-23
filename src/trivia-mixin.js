@@ -86,7 +86,8 @@ module.exports = (BotSubclass) => {
                 return null;
             }
 
-            const seconds = factor(top1.points, top1.points - userPoints, maxSeconds, minSeconds);
+            const diff = top1.points - userPoints;
+            const seconds = diff <= 0 ? minSeconds : factor(top1.points, diff, maxSeconds, minSeconds + 1);
             const answerCount = factor(top1.points, userPoints, maxAnswers, minAnswers);
             const answers = this._getFakeAnswers(list, answerCount - 1, index);
             const rightAnswerPosition = random(answerCount - 1);
