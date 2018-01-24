@@ -63,6 +63,13 @@ module.exports = (BotSubclass) => {
             return null;
         }
 
+        async reset(type, user) {
+            return this.memory.edit(`points-${type}`, (points = {}) => {
+                points[user] = 0;
+                return points;
+            });
+        }
+
 
         // TRIVIA
 
