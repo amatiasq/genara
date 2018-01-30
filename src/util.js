@@ -92,24 +92,31 @@ function readdir(route) {
 function rollDice(text) {
     let found = null;
     let result = text;
+    const rolled = [];
 
     // eslint-disable-next-line no-cond-assign
-    while (found = DICE_ROLL.exec(text)) {
+    while (found = DICE_ROLL.exec(result)) {
+        console.log('[ROLL]', result);
         const match = found[0];
         const dices = parseInt(found[1], 10);
         const faces = parseInt(found[2], 10);
+        let verbose = null;
+        let output = null;
 
         if (dices === 1) {
-            result = result.replace(match, random(faces));
+            output = verbose = random(1, faces);
         }
         else {
-            const rolls = array(dices).map(() => random(faces));
-            const total = rolls.reduce((sum, roll) => sum + roll, 0);
-            result = result.replace(match, `(${rolls.join(' + ')}) = ${total}`);
+            const rolls = array(dices).map(() => random(1, faces));
+            output = rolls.reduce((sum, roll) => sum + roll, 0);
+            verbose = `(${rolls.join(' + ')}) = ${output}`;
         }
+
+        rolled.push(`Roll ${match}: ${verbose}`);
+        result = result.replace(match, `{${output}}`);
     }
 
-    return result;
+    return rolled.length ? `${result}\n  - ${rolled.join('\n  - ')}` : result;
 }
 
 function splitWords(text) {
