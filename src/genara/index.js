@@ -9,12 +9,10 @@ const Bot = require('../bot').apply(
 
 class Genara extends Bot {
 
-    get insults() {
-        return this.memory.get('learnt-insult') || [];
-    }
+    async insult(extra = []) {
+        const list = await this.db.Learn.find({ type: 'insult' });
 
-    insult(extra = []) {
-        return randomItem(this.insults.concat(extra));
+        return randomItem(list.concat(extra));
     }
 }
 

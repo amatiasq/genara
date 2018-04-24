@@ -5,13 +5,13 @@ module.exports = async(antuan, message, text, { splitWords }) => {
     const words = splitWords(text);
 
     if (words[0] === 'a') {
-        return message.channel.send(`${mention || words.slice(1).join(' ')}, ${antuan.getLearnt('piropo')}`);
+        return message.channel.send(`${mention || words.slice(1).join(' ')}, ${await antuan.getLearnt('piropo')}`);
     }
 
     const index = parseInt(words[0], 10);
     if (!isNaN(index)) {
-        return message.reply(antuan.getLearnt('piropo', index) || 'ese número no existe, colega');
+        return message.reply(await antuan.getLearnt('piropo', index) || 'ese número no existe, colega');
     }
 
-    return message.reply(antuan.getLearnt('piropo'));
+    return message.reply(await antuan.getLearnt('piropo'));
 };

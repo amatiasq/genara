@@ -7,24 +7,21 @@ module.exports = async(bot, message) => {
         return message.reply('Para quién?');
     }
 
-    const messages = bot.memory.get(`${target}.tell`);
+    const { tell } = await bot.db.Users.get(target);
 
-    if (!messages) {
+    if (!tell || !tell.length) {
         return message.reply('No, nada');
     }
 
-    const authors = Object.keys(messages);
-
-    if (authors.length === 1) {
-        const [ author ] = authors;
-        await message.reply(`hay un mensaje de ${author}: ${messages[author]}`);
+    if (tell.length === 1) {
+        const [{ author, text }] = tell;
+        await message.reply(`hay un mensaje de ${author}: ${text}`);
         return;
     }
 
-    const tell = authors
-        .map(author => ` - de ${author}: ${messages[author]}`)
+    const list = tell
+        .map(({ author, text }) => ` - de ${author}: ${text}`)
         .join('\n');
 
-    await message.reply(`hay varios mensajes:\n${tell}`);
-    return;
+    return message.reply(`hay varios mensajes:\n${list}`);
 };

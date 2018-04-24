@@ -19,55 +19,68 @@ module.exports = (BotSubclass) => {
             this.MIN_ANSWERS = options.MIN_ANSWERS || MIN_ANSWERS;
             this.MAX_SECONDS = options.MAX_SECONDS || MAX_SECONDS;
             this.MIN_SECONDS = options.MIN_SECONDS || MIN_SECONDS;
+
+            this.newSchema('Points', {
+                user: String,
+                type: String,
+                points: Number,
+            });
+
+            this.newSchema('Trivia', {
+                user: String,
+                id: String,
+                answer: Number,
+                time: Date,
+            });
         }
 
         // POINTS
 
-        async addPoints(type, user, value) {
-            return this.memory.edit(`points-${type}`, (points = {}) => {
-                points[user] = this.getPoints(type, user) + value;
-                return points;
-            });
+        async addPoints(type, user, points) {
+            const entry = (
+                (await this.db.Points.findOne({ type, user })) ||
+                (await this.db.Points.create({ type, user }))
+            );
+
+            entry.points = (entry.points || 0) + points;
+            return entry.save();
         }
 
-        getPoints(type, user = null) {
-            const points = this.memory.get(`points-${type}`) || {};
+        async getBoard(type) {
+            return this.db.Points
+                .find({ type })
+                .limit(5)
+                .sort('+points')
+                .select('user points');
+        }
 
-            if (user) {
-                return points[user] || 0;
-            }
-
-            return Object.keys(points)
-                .map(user => ({ user, points: points[user] }))
-                .sort((first, second) => second.points - first.points);
+        async getPoints(type, user = null) {
+            const entry = await this.db.Points.findOne({ type, user });
+            return entry ? entry.points : 0;
         }
 
         async lowerPoints(type, operator) {
+            const key = `points-${type}-lower`;
+            const stored = parseInt(await this.db.Memory.get(key), 10);
             const now = new Date();
-            const lastLower = new Date(this.memory.get(`points-${type}-lower`) || 0);
+            const lastLower = new Date(stored || 0);
             const diff = Math.round((now - lastLower) / MILLISECONDS_IN_SECONDS / SECONDS_IN_MINUTES) / MINUTES_IN_HOURS;
 
             if (diff < HOURS_IN_DAY) {
                 return HOURS_IN_DAY - diff;
             }
 
-            await this.memory.edit(`points-${type}`, (points = {}) => {
-                for (const user of Object.keys(points)) {
-                    points[user] = Math.ceil(points[user] * (1 - operator));
-                }
-                return points;
-            });
+            await Promise.all(this.db.Points.find({ type }).snapshot().map(entry => {
+                const points = Math.ceil(entry.points * (1 - operator));
+                return this.db.Points.update({ _id: entry._id }, { $set: { points }});
+            }));
 
-            await this.memory.set(`points-${type}-lower`, Number(now));
-
+            this.db.Memory.set(key, Number(now));
             return null;
         }
 
         async reset(type, user) {
-            return this.memory.edit(`points-${type}`, (points = {}) => {
-                points[user] = 0;
-                return points;
-            });
+            return this.db.Points.findOneAndUpdate({ type, user }, { $set: { points: 0 }});
         }
 
 
@@ -81,8 +94,8 @@ module.exports = (BotSubclass) => {
             minSeconds = this.MIN_SECONDS,
         } = {}) {
             const { index, question, answer } = this._getTriviaEntry(list);
-            const [ top1, top2 ] = this.getPoints(type);
-            const userPoints = this.getPoints(type, target);
+            const [ top1, top2 ] = await this.getBoard(type);
+            const userPoints = await this.getPoints(type, target);
 
             if (
                 top1 && top2 &&
@@ -93,9 +106,10 @@ module.exports = (BotSubclass) => {
                 return null;
             }
 
-            const diff = top1.points - userPoints;
-            const seconds = diff <= 0 ? minSeconds : factor(top1.points, diff, maxSeconds, minSeconds + 1);
-            const answerCount = factor(top1.points, userPoints, maxAnswers, minAnswers);
+            const topPoints = top1 && top1.points > 10 ? top1.points : 10;
+            const diff = topPoints - userPoints;
+            const seconds = diff <= 0 ? minSeconds : factor(topPoints, diff, maxSeconds, minSeconds + 1);
+            const answerCount = factor(topPoints, userPoints, maxAnswers, minAnswers);
             const answers = this._getFakeAnswers(list, answerCount - 1, index);
             const rightAnswerPosition = random(answerCount - 1);
 
@@ -109,7 +123,7 @@ module.exports = (BotSubclass) => {
             };
         }
 
-        async resolveTrivia(type, target, text) {
+        async resolveTrivia(type, user, text) {
             const match = text.match(/\d+/);
             const response = match && parseInt(match[0], 10);
 
@@ -117,21 +131,21 @@ module.exports = (BotSubclass) => {
                 return null;
             }
 
-            const stored = this.memory.get('running-trivia');
-            const entry = stored && stored[target];
+            const entry = await this.db.Trivia.findOne({ user });
 
             if (!entry) {
                 return null;
             }
 
             const success = response === entry.answer;
+            const { answer } = entry;
 
-            await this._endTrivia(target, entry.id);
+            await entry.remove();
 
             if (!success) {
                 return {
                     success: false,
-                    expected: entry.answer,
+                    expected: answer,
                     actual: response,
                 };
             }
@@ -139,16 +153,19 @@ module.exports = (BotSubclass) => {
             return { success: true };
         }
 
-        async _startTrivia(message, target, answer, timeout) {
+        async _startTrivia(message, user, answer, timeout) {
             const id = Math.random();
 
-            await this.memory.edit('running-trivia', (value = {}) => {
-                value[target] = { id, answer, time: new Date() };
-                return value;
-            });
+            this.db.Trivia.bulkWrite([{
+                deleteMany: { filter: { user }},
+            }, {
+                insertOne: { document: { user, id, answer, time: new Date() }}
+            }]);
 
             setTimeout(async() => {
-                if (await this._endTrivia(target, id)) {
+                const { n: removed } = await this.db.Trivia.deleteOne({ user, id });
+
+                if (removed) {
                     message.reply(this.message('TRIVIA_TIMEOUT'));
                 }
             }, timeout * MILLISECONDS_IN_SECONDS);
@@ -156,17 +173,8 @@ module.exports = (BotSubclass) => {
             return id;
         }
 
-        async _endTrivia(target, id) {
-            const stored = this.memory.get('running-trivia') || {};
-            const entry = stored[target];
+        async _endTrivia(user, id) {
 
-            if (entry && entry.id === id) {
-                delete stored[target];
-                await this.memory.set('running-trivia', stored);
-                return true;
-            }
-
-            return false;
         }
 
         _getTriviaEntry(list) {
