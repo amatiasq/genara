@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 /* eslint no-process-env:0 */
 'use strict';
-const LEARN = /^learnt-(\w+)$/
-const POINTS = /^points-(\w+)$/
-const LOWER = /^points-(\w+)-lower/
+const LEARN = /^learnt-(\w+)$/;
+const POINTS = /^points-(\w+)$/;
+const LOWER = /^points-(\w+)-lower$/;
+const IGNORE = /^(.*)\.ignore$/;
 
 start();
 
@@ -46,21 +47,23 @@ const custom = {
 
 function partialHandler(bot, type, key, value) {
     const learn = type.match(LEARN);
-
     if (learn) {
         return custom.learn(bot, learn[1], key, value);
     }
 
     const points = type.match(POINTS);
-
     if (points) {
         return custom.points(bot, points[1], key, value);
     }
 
     const lower = type.match(LOWER);
-
     if (lower) {
         return custom.lower(bot, points[1], key, value);
+    }
+
+    const ignore = type.match(IGNORE);
+    if (ignore) {
+        return custom.ignore(bot, ignore[1], key, value);
     }
 }
 
