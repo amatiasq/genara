@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /* eslint no-process-env:0 */
 'use strict';
+require('../scripts/fake-server');
 
 require('./mongodb')
     .then((db) => Promise.all([
