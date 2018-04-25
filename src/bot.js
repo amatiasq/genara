@@ -2,7 +2,6 @@ const fs = require('fs');
 const path = require('path');
 const padLeft = require('left-pad');
 const Discord = require('discord.js');
-const Memory = require('./memory');
 const util = require('./util');
 const logged = new Map();
 
