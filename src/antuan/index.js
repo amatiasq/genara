@@ -48,6 +48,6 @@ antuan.alias('mira como tiemblo', 'pelea');
 antuan.alias('no queda alcohol', 'pelea');
 antuan.alias('echemos un pulso', 'pulso');
 antuan.alias('suelta un piropo', 'piropo');
-antuan.alias('cuantso puntos tiene', 'puntos');
+antuan.alias('cuantos puntos tiene', 'puntos');
 
 module.exports = require('../common')(antuan);

@@ -70,7 +70,9 @@ module.exports = (BotSubclass) => {
                 return HOURS_IN_DAY - diff;
             }
 
-            await Promise.all(this.db.Points.find({ type }).snapshot().map(entry => {
+            const points = await this.db.Points.find({ type }).snapshot();
+
+            await Promise.all(points.map(entry => {
                 const points = Math.ceil(entry.points * (1 - operator));
                 return this.db.Points.update({ _id: entry._id }, { $set: { points }});
             }));
