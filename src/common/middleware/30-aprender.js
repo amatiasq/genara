@@ -20,9 +20,9 @@ module.exports = async(bot, message, { normalize, splitWords }) => {
         return;
     }
 
-    const memory = bot.memory.get('who') || {};
-    memory[name] = words.slice(1).join(' ');
+    const user = await bot.db.Users.get(name);
+    user.who = words.slice(1).join(' ');
+    await user.save();
 
-    await bot.memory.set('who', memory);
     return message.reply('Vale! Me lo apunto para el examen.');
 };

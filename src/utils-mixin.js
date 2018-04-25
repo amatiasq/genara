@@ -9,6 +9,7 @@ module.exports = (BotSubclass) => {
             super(prefixes, options);
 
             this._messages = options.messages || {};
+            this._nickCache = new Map();
         }
 
         async hear(message) {
@@ -33,20 +34,27 @@ module.exports = (BotSubclass) => {
             return `http://repos.amatiasq.com/${path.join('genara', route, file)}`;
         }
 
-        softMention(user) {
-            const nicks = this.memory.get('nicknames') || {};
-            return nicks[user] || user;
+        async softMention(user) {
+            if (!this._nickCache.has(user.toString())) {
+                const stored = await this.db.Users.get(user);
+
+                if (stored && stored.nick) {
+                    this._nickCache.set(user.toString(), stored.nick);
+                }
+            }
+
+            return this._nickCache.get(user) || user;
         }
 
         async setNickname(user, nick) {
-            const nicknames = this.memory.get('nicknames') || {};
+            const stored = this._nickCache.get(user.toString());
 
-            if (nicknames[user] === nick) {
+            if (stored === nick) {
                 return false;
             }
 
-            nicknames[user] = nick;
-            await this.memory.set('nicknames', nicknames);
+            await this.db.Users.set(user, { nick });
+            this._nickCache.set(user.toString(), nick);
             this.log('NICKNAMES', `${user} is "${nick}"`);
             return true;
         }

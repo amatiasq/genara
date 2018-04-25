@@ -1,13 +1,15 @@
 'use strict';
 
 module.exports = async(bot, message) => {
+    const board = await bot.getBoard('pelea');
 
-    const classification = bot.getPoints('pelea')
-        .slice(0, 5)
-        .map(({ user, points }, index) => `${index + 1} - ${bot.softMention(user)} con ${points} ${pluralize(points)}`)
-        .join('\n\t');
+    const classification = await Promise.all(board.map(async ({ user, points }, index) => {
+        const nick = await bot.softMention(user);
 
-    return message.reply(`Pues así estamos:\n\t${classification}`);
+        return `${index + 1} - ${nick} con ${points} ${pluralize(points)}`;
+    }));
+
+    return message.reply(`Pues así estamos:\n\t${classification.join('\n\t')}`);
 };
 
 

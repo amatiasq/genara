@@ -7,11 +7,19 @@ module.exports = async(bot, message, text, { mention, removeStart }) => {
         return;
     }
 
-    const key = `${target}.tell`;
-    const stored = bot.memory.get(key) || {};
+    const user = await bot.db.Users.get(target);
+    const entry = {
+        author: message.author.toString(),
+        text: removeStart(removeStart(text, target), mention(target)),
+    };
 
-    stored[String(message.author)] = removeStart(removeStart(text, target), mention(target));
-    bot.memory.set(key, stored);
+    if (!user.tell) {
+        user.tell = [entry];
+    } else {
+        user.tell.push(entry);
+    }
+
+    await user.save();
 
     return message.reply(`ok, si veo a ${target} se lo diré`);
 };
