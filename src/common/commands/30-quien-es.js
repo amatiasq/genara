@@ -2,9 +2,9 @@
 
 module.exports = async(bot, message, text, { normalize, randomItem, splitWords, trim }) => {
     const target = splitWords(trim(normalize(text)))[0];
-    const memory = bot.memory.get('who') || {};
+    const user = await bot.db.Users.get(target);
 
-    return message.channel.send(memory[target] || randomItem([
+    return message.channel.send(user.who || randomItem([
         'Quién?',
         'Ni puta idea',
         'Y yo que se',

@@ -3,33 +3,44 @@ const { randomItem } = require('./util');
 module.exports = (BotSubclass) => {
     return class LearnMixin extends BotSubclass {
 
-        async learnWhoIs(user, value) {
-            return this.memory.edit('who', (who = {}) => {
-                who[user] = value;
-                return who;
+        constructor(prefixes, options) {
+            super(prefixes, options);
+
+            this.USER_SCHEMA.who = String;
+
+            this.newSchema('Learn', {
+                type: String,
+                text: String,
+                nick: String,
             });
         }
 
-        whoIs(user) {
-            return this.memory.get('who', {})[user] || null;
+
+        async learnWhoIs(target, value) {
+            return this.db.Users.set(target, { nick });
         }
 
-        async learn(type, nick, value) {
-            return this.memory.edit(`learnt-${type}`, (entries = []) => {
-                return [ ...entries, `${value} (by ${nick})` ];
-            });
+        async whoIs(target) {
+            const user = await this.db.Users.get(target)
+            return user.who || null;
         }
 
-        getLearnt(type, index = null) {
-            const list = this.memory.get(`learnt-${type}`) || [];
+        async learn(type, nick, text) {
+            return this.db.Learn.create({ type, text, nick });
+        }
 
-            return index == null
+        async getLearnt(type, index = null) {
+            const list = await this.db.Learn.find({ type });
+            const result = index == null
                 ? randomItem(list)
                 : list[index];
+
+            return `${result.text} (by ${result.nick})`;
         }
 
-        count(type) {
-            return this.memory.get(`learnt-${type}`, []).length;
+        async count(type) {
+            const list = await this.db.Learn.find({ type });
+            return list.length;
         }
 
     };

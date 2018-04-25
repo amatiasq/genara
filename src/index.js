@@ -2,10 +2,11 @@
 /* eslint no-process-env:0 */
 'use strict';
 
-Promise.all([
-    require('./genara').connect(process.env.GENARA_TOKEN),
-    require('./antuan').connect(process.env.ANTUAN_TOKEN),
-    require('./maram').connect(process.env.MARAM_TOKEN),
-])
+require('./mongodb')
+    .then((db) => Promise.all([
+        require('./genara').connect(process.env.GENARA_TOKEN, db),
+        require('./antuan').connect(process.env.ANTUAN_TOKEN, db),
+        require('./maram').connect(process.env.MARAM_TOKEN, db),
+    ]))
     .then(() => console.log('Ready.'))
     .catch(error => console.error(error));

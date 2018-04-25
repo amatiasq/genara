@@ -7,6 +7,6 @@ module.exports = async(bot, message) => {
         return bot.executeCommand(message, 'cuantos puntos tengo');
     }
 
-    const value = bot.getPoints('pelea', target);
+    const value = await bot.getPoints('pelea', target);
     return message.reply(`${target} tiene ${value} punto${value === 1 ? '' : 's'}.`);
 };

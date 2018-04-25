@@ -38,7 +38,21 @@ module.exports = class Bot {
 
         this.isConnected = false;
         this.client = new Discord.Client();
-        this.memory = new Memory(path.join(__dirname, `../memory/${this.name}.json`), this.name);
+
+        this._schemas = {};
+        this.USER_SCHEMA = {
+            id: String,
+            nick: String,
+            who: String,
+            tell: [{
+                author: String,
+                text: String,
+            }],
+        };
+        this.MEMORY_SCHEMA = {
+            key: String,
+            value: String,
+        };
     }
 
     log(type, ...message) {
@@ -56,11 +70,69 @@ module.exports = class Bot {
         );
     }
 
-    async connect(token) {
+    newSchema(key, schema) {
+        this._schemas[key] = schema;
+    }
+
+    async connect(token, db) {
         if (this.isConnected) {
             return false;
         }
 
+        await Promise.all([
+            this._connectDatabase(db),
+            this._connectDiscord(token),
+        ]);
+
+        this.isConnected = true;
+        return true;
+    }
+
+    _connectDatabase(db) {
+        const UserSchema = new db.Schema(this.USER_SCHEMA);
+        const MemorySchema = new db.Schema(this.MEMORY_SCHEMA);
+
+        UserSchema.static('get', async function(id) {
+            const result = await this.findOne({ id });
+            return result || this.create({ id });
+        });
+
+        UserSchema.static('set', async function(id, values) {
+            return this.findOneAndUpdate(
+                { id },
+                { $set: values },
+                { upsert: true }
+            );
+        });
+
+        MemorySchema.static('get', async function(key) {
+            return this.findOne({ key });
+        });
+
+        MemorySchema.static('set', async function(key, value) {
+            return this.findOneAndUpdate({ key }, { $set: { value }});
+        });
+
+        MemorySchema.static('delete', async function(key) {
+            return this.deleteOne({ key });
+        });
+
+        const models = {
+            Users: db.model(`${this.name}_Users`, UserSchema),
+            Memory: db.model(`${this.name}_Memory`, MemorySchema),
+        };
+
+        Object.keys(this._schemas).forEach(key => {
+            models[key] = db.model(
+                `${this.name}_${key}`,
+                new db.Schema(this._schemas[key])
+            );
+        });
+
+        this.db = models;
+    }
+
+    async _connectDiscord(token) {
         for (const file of this._readdir('middleware')) {
             this.log('LOAD_MIDDLEWARE', file);
             this.middleware(require(file));
@@ -81,10 +153,6 @@ module.exports = class Bot {
         this.client.on('message', message => this.onMessage(message));
 
         await this.client.login(token);
-        await this.memory.load();
-
-        this.isConnected = true;
-        return true;
     }
 
     onMessage(message) {
