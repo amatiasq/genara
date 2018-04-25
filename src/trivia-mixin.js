@@ -49,8 +49,8 @@ module.exports = (BotSubclass) => {
         async getBoard(type) {
             return this.db.Points
                 .find({ type })
+                .sort('-points')
                 .limit(5)
-                .sort('+points')
                 .select('user points');
         }
 
