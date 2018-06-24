@@ -1,12 +1,204 @@
+const { EventEmitter } = require('events');
 const fs = require('fs');
 const path = require('path');
 const padLeft = require('left-pad');
 const Discord = require('discord.js');
 const util = require('./util');
+const deepMerge = require('lodash.merge');
 const logged = new Map();
 
 // every hour
 setInterval(() => logged.clear(), 1000 * 60 * 60);
+
+module.exports = class Bot {
+
+    constructor(prefixes, {
+        id,
+        directory,
+        isHearBotEnabled = false,
+        isHearSelfEnabled = false,
+        unhandled = () => {},
+    }) {
+        this.prefixes = prefixes;
+        this.name = prefixes[0];
+        this.id = id;
+        this.directory = directory;
+
+        this._tr = {};
+        this._middleware = [];
+        this._commands = [];
+        this._aliases = {};
+        this._unhandled = unhandled;
+        this._isHearBotEnabled = isHearBotEnabled;
+        this._isHearSelfEnabled = isHearSelfEnabled;
+
+        this.isConnected = false;
+        this._emitter = new EventEmitter();
+        this.client = new Discord.Client();
+
+        this._schemas = {
+            Users: { id: String },
+            Memory: {
+                type: String,
+                key: String,
+                value: String,
+            },
+        };
+    }
+
+    async connect(token, db) {
+        if (this.isConnected) {
+            return false;
+        }
+
+        await Promise.all([
+            this._connectDatabase(db),
+            this._connectDiscord(token),
+        ]);
+
+        this.isConnected = true;
+        return true;
+    }
+
+    _connectDatabase(db) {
+        const { Users, Memory, ...schemas } = this._schemas;
+        const UserSchema = new db.Schema(Users);
+        const MemorySchema = new db.Schema(Memory);
+
+        // This is mongoose API
+        /* eslint-disable no-invalid-this */
+
+        UserSchema.static('get', async function(id) {
+            const result = await this.findOne({ id });
+            return result || this.create({ id });
+        });
+
+        UserSchema.static('set', async function(id, values) {
+            return this.findOneAndUpdate(
+                { id },
+                { $set: values },
+                { upsert: true },
+            );
+        });
+
+        MemorySchema.static('get', async function(type, key) {
+            return this.findOne({ type, key });
+        });
+
+        MemorySchema.static('set', async function(type, key, value) {
+            return this.findOneAndUpdate(
+                { type, key },
+                { $set: { value }},
+                { upsert: true },
+            );
+        });
+
+        MemorySchema.static('delete', async function(type, key = null) {
+            return this.deleteMany(key ? { type, key } : { type });
+        });
+
+        /* eslint-enable no-invalid-this */
+
+        const models = {
+            Users: db.model(`${this.name}_Users`, UserSchema),
+            Memory: db.model(`${this.name}_Memory`, MemorySchema),
+        };
+
+        Object.keys(this._schemas).forEach(key => {
+            models[key] = db.model(
+                `${this.name}_${key}`,
+                new db.Schema(this._schemas[key])
+            );
+        });
+
+        this.db = models;
+    }
+
+    async _connectDiscord(token) {
+        for (const file of this._readdir('middleware')) {
+            this.log('LOAD_MIDDLEWARE', file);
+            this.middleware(require(file));
+        }
+
+        for (const file of this._readdir('commands')) {
+            const command = file
+                .replace(/^.*\//, '')
+                .replace(/-/g, ' ')
+                .replace(/^[0-9]+/, '')
+                .replace(/\.js$/, '')
+                .trim();
+
+            this.log('LOAD_COMMAND', `${file} as "${command}"`);
+            this.command(command, require(file));
+        }
+
+        this.client.on('message', message => this.onMessage(message));
+
+        await this.client.login(token);
+    }
+
+    is(user) {
+        return user.id === this.id;
+    }
+
+    log(type, ...message) {
+        console.log(`[${padLeft(this.name.toUpperCase(), 6, ' ')}][${type}]`, ...message);
+    }
+
+    loadLanguage(route) {
+        this._tr = require(route);
+    }
+
+    loadPlugin(route) {
+        const name = path.basename(route);
+        const plugin = require(route);
+
+        if (plugin.db) {
+            keys(plugin.db, this._setSchema.bind(this));
+        }
+
+        if (plugin.commands) {
+            keys(plugin.commands, this._addCommand.bind(this));
+        }
+
+        if (plugin.aliases) {
+            keys(plugin.aliases, this._addAliases.bind(this));
+        }
+
+        if (plugin.events) {
+            keys(plugin.events, this._registerEvent.bind(this));
+        }
+
+        this[name] = plugin.default(this);
+    }
+
+    _setSchema(name, schema) {
+        this._schemas[name] = Object.assign({}, this._schemas[name], schema);
+    }
+
+    _addCommand(name, command) {
+        const entry = Object.assign({}, command, { name });
+        this._commands.push(entry);
+    }
+
+    _addAliases(command, aliases) {
+        aliases.forEach(alias => this._aliases[alias] = command);
+    }
+
+    _registerEvent(event, handler) {
+        this._emitter.on(event, handler);
+    }
+
+}
+
+function keys(object, iterator) {
+    Object.keys(object).forEach(key => iterator(key, object[key], object));
+}
+
+
+
+
+
 
 module.exports = class Bot {
 
@@ -53,6 +245,8 @@ module.exports = class Bot {
             value: String,
         };
     }
+
+
 
     log(type, ...message) {
         console.log(`[${padLeft(this.name.toUpperCase(), 6, ' ')}][${type}]`, ...message);
@@ -113,7 +307,7 @@ module.exports = class Bot {
         });
 
         MemorySchema.static('delete', async function(key) {
-            return this.deleteOne({ key });
+            return this.deleteOne({ key });
         });
 
         const models = {
