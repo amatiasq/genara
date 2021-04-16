@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = async(bot, message, text, { normalize, randomItem, splitWords, trim }) => {
+export default async function(bot: Applied<typeof Bot>, message: ExtendedMessage, text, { normalize, randomItem, splitWords, trim }) => {
     const target = splitWords(trim(normalize(text)))[0];
     const user = await bot.db.Users.get(target);
 

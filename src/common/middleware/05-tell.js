@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = async(bot, message) => {
+export default async function(bot: Applied<typeof Bot>, message: ExtendedMessage) => {
     const user = await bot.db.Users.get(message.author);
     const { tell } = user;
 

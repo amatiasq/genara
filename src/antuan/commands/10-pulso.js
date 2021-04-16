@@ -1,7 +1,7 @@
 'use strict';
 const insults = require('../insultos.json').pulso;
 
-module.exports = async(bot, message) => {
+export default async function(bot: Applied<typeof Bot>, message: ExtendedMessage) => {
     const result = await bot.trivia(message, 'pelea', insults);
 
     if (!result) {

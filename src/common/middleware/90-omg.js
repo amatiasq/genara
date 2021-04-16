@@ -8,7 +8,7 @@ const triggers = [
     'wat',
 ];
 
-module.exports = async(bot, message, { containsWord, random }) => {
+export default async function(bot: Applied<typeof Bot>, message: ExtendedMessage, { containsWord, random }) => {
     const trigger = triggers.some(trigger => containsWord(message.content, trigger));
 
     if (!trigger || message.omg) {

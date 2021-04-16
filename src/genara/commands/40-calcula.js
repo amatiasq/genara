@@ -1,7 +1,7 @@
 'use strict';
 const redFlags = [ 'if', 'for', 'while', 'require' ];
 
-module.exports = async(bot, message, script, { contains }) => {
+export default async function(bot: Applied<typeof Bot>, message: ExtendedMessage, script, { contains }) => {
     if (contains(script, redFlags)) {
         return message.reply('Intentas romper el tejido interdimensional? Pobre mortal...');
     }

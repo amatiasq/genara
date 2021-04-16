@@ -1,7 +1,7 @@
 'use strict';
 const insults = require('../insultos.json');
 
-module.exports = async(bot, message, text, { containsWord }) => {
+export default async function(bot: Applied<typeof Bot>, message: ExtendedMessage, text, { containsWord }) => {
     const category = containsWord(text, 'idiota') ? 'third' : 'secret';
     const level = containsWord(text, 'pro') ? 'master' : 'normal';
     const list = insults[category].map(entry => {

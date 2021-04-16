@@ -8,7 +8,7 @@ const triggers = [
     'que hora son',
 ];
 
-module.exports = async(bot, message, { containsWord, time }) => {
+export default async function(bot: Applied<typeof Bot>, message: ExtendedMessage, { containsWord, time }) => {
     if (!triggers.some(trigger => containsWord(message.content, trigger))) {
         return;
     }

@@ -4,7 +4,7 @@ const gods = [
     '370218583675895809',
 ];
 
-module.exports = async(bot, message, text, { mention, removeStart }) => {
+export default async function(bot: Applied<typeof Bot>, message: ExtendedMessage, text, { mention, removeStart }) => {
     if (gods.indexOf(String(message.author.id)) === -1) {
         return;
     }

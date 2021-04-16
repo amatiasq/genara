@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = async(bot, message, { containsWord }) => {
+export default async function(bot: Applied<typeof Bot>, message: ExtendedMessage, { containsWord }) => {
     if (containsWord(message.content, 'tetas')) {
         message.sendImage(bot.randomImage('tetas'));
     }

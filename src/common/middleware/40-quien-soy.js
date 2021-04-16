@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = async(bot, message, { containsWord, normalize, trim }) => {
+export default async function(bot: Applied<typeof Bot>, message: ExtendedMessage, { containsWord, normalize, trim }) => {
     const isMentioned = message.isMentioned();
     const text = trim(normalize(message.content));
     const isQuienSoy = text === 'quien soy' || text === 'quien soy?';

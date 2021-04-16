@@ -1,7 +1,7 @@
 'use strict';
 const number = /\d+/;
 
-module.exports = async(bot, message, { randomItem }) => {
+export default async function(bot: Applied<typeof Bot>, message: ExtendedMessage, { randomItem }) => {
     const result = await bot.resolveTrivia('pelea', message.author, message.removeMention());
 
     if (!result) {

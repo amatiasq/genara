@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = async(bot, message) => {
+export default async function(bot: Applied<typeof Bot>, message: ExtendedMessage) => {
     const board = await bot.getBoard('pelea');
 
     const classification = await Promise.all(board.map(async ({ user, points }, index) => {

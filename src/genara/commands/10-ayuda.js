@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = async(bot, message, text, { randomItem }) => {
+export default async function(bot: Applied<typeof Bot>, message: ExtendedMessage, text, { randomItem }) => {
     const insult = randomItem([
         'Si me invocas di algo útil...',
         'No me jodas, otra vez?',

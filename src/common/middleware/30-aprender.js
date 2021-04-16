@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = async(bot, message, { normalize, splitWords }) => {
+export default async function(bot: Applied<typeof Bot>, message: ExtendedMessage, { normalize, splitWords }) => {
     if (!message.isMentioned()) {
         return;
     }

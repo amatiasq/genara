@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = async(bot, message, text, { mention, removeStart }) => {
+export default async function(bot: Applied<typeof Bot>, message: ExtendedMessage, text, { mention, removeStart }) => {
     const target = message.getFirstMention();
 
     if (!target) {

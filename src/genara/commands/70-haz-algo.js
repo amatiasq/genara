@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = async(bot, message, text, { randomItem, wait }) => {
+export default async function(bot: Applied<typeof Bot>, message: ExtendedMessage, text, { randomItem, wait }) => {
     return randomItem([
         resucitar,
         fuego,
