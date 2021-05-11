@@ -4,9 +4,9 @@ module.exports = {
     script    : 'node src/index.js',
     env: {
       NODE_ENV: 'development',
-      GENARA_TOKEN: 'Mzg5NzUzOTQ3NzgwNTQ2NTYz.DRAKPQ.SKEiDLMiqf901He3rSBtXSy6Sxg',
-      ANTUAN_TOKEN: 'MzkxMjQzNTI4Nzk5Mzg3NjUy.DRV1jA.UdFyZODfzHTy-oFstBKZe9zbQ6g',
-      MARAM_TOKEN: 'MzkxMjQ0MDEzNDIxODU0NzIy.DRV15g.qth8hQ9dhSvcEdQgixpxswQxGFc',
+      GENARA_TOKEN: '',
+      ANTUAN_TOKEN: '',
+      MARAM_TOKEN: '',
       MONGODB_URI: 'mongodb://localhost/genara',
     }
   }],
